@@ -467,7 +467,28 @@ src="https://www.facebook.com/tr?id=1411843530606222&ev=PageView&noscript=1"
 
     <button class="btn btn--ghost" id="againBtn">Submit another request</button>
   </div>
+<!-- ============ END SUCCESS CARD ============ -->
 
+<!-- ADD THIS SMALL SCRIPT BELOW - It watches for success and fires Lead -->
+<script>
+  (function() {
+    var card = document.getElementById('successCard');
+    if (!card) return;
+
+    // Watch for when "hidden" class is removed
+    var observer = new MutationObserver(function() {
+      if (!card.classList.contains('hidden')) {
+        if (typeof fbq !== 'undefined') {
+          fbq('track', 'Lead');
+          console.log('Meta Lead event fired');
+        }
+        observer.disconnect(); // fire once per page load
+      }
+    });
+
+    observer.observe(card, { attributes: true, attributeFilter: ['class'] });
+  })();
+</script>
 </div>
 
 <script src="script.js"></script>
